@@ -9,7 +9,7 @@ jobs:
       - name: dep-scan
         run: |
           pip install owasp-depscan
-          depscan --src . --reports-dir ./reports
+          depscan --src . --reports-dir ./reports -v
       - uses: actions/upload-artifact@v4   # <- UPDATED HERE
         with:
           name: dep-scan-report
