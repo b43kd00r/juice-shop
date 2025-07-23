@@ -13,7 +13,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Run depscan with research profile and reachability
+    - name: Prepare reports directory
+      run: mkdir -p ${{ github.workspace }}/reports
+
+    - name: Run depscan
       run: |
         docker run --rm \
           -v ${{ github.workspace }}:/app \
@@ -23,11 +26,11 @@ jobs:
           -t nodejs \
           --profile research \
           --reachability-analyzer SemanticReachability \
-          --explain
+          --explain \
+          --debug
 
     - name: Upload reports
       uses: actions/upload-artifact@v4
       with:
         name: depscan-reports
         path: ${{ github.workspace }}/reports
-
