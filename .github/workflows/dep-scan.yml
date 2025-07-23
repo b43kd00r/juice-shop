@@ -1,13 +1,32 @@
-name: Dependency Scanning
+name: depscan
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
 
 jobs:
-  dep-scan:
+  depscan:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Install dep-scan and run
-        run: |
-          pip install owasp-depscan
-          depscan --src . -v
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run depscan with research profile and reachability
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}:/app \
+          ghcr.io/owasp-dep-scan/dep-scan \
+          --src /app \
+          --reports-dir /app/reports \
+          -t nodejs \
+          --profile research \
+          --reachability-analyzer SemanticReachability \
+          --explain
+
+    - name: Upload reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: depscan-reports
+        path: reports/
