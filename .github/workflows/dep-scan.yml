@@ -29,4 +29,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: depscan-reports
-        path: reports/
+        path: ${{ github.workspace }}/reports
+
