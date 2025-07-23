@@ -10,7 +10,7 @@ jobs:
       - name: Install dep-scan and run
         run: |
           pip install owasp-depscan
-          depscan --src /juice-shop --reports-dir /juice-shop/reports -v
+          depscan --src . -v
       - name: Upload dep-scan report
         uses: actions/upload-artifact@v4
         with:
